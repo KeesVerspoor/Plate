@@ -1,5 +1,5 @@
 import { redirect, notFound } from 'next/navigation';
-import { auth } from '@/lib/auth';
+import { auth } from '@/lib/session';
 import { prisma } from '@/lib/db';
 import PageEditor from '@/components/editor/page-editor';
 

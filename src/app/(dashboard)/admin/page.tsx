@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { auth } from '@/lib/auth';
+import { auth } from '@/lib/session';
 import { prisma } from '@/lib/db';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
