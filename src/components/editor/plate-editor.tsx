@@ -35,11 +35,13 @@ function Toolbar({ editor }: { editor: ReturnType<typeof usePlateEditor> }) {
   ];
 
   const toggleMark = (markType: string) => {
+    if (!editor) return;
     editor.tf.toggleMark({ key: markType });
     editor.tf.focus();
   };
 
   const toggleBlock = (blockType: string) => {
+    if (!editor) return;
     const isActive = editor.api.some({
       match: { type: blockType },
     });
