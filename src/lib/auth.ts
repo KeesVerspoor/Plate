@@ -12,7 +12,9 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        console.log('[AUTH] authorize called, email:', credentials?.email);
         if (!credentials?.email || !credentials?.password) {
+          console.log('[AUTH] missing credentials');
           return null;
         }
 
@@ -21,11 +23,14 @@ export const authOptions: NextAuthOptions = {
             where: { email: credentials.email },
           });
 
+          console.log('[AUTH] user found:', !!user);
           if (!user) return null;
 
           const isValid = await bcrypt.compare(credentials.password, user.password);
+          console.log('[AUTH] password valid:', isValid);
           if (!isValid) return null;
 
+          console.log('[AUTH] login success for:', user.email);
           return {
             id: user.id,
             email: user.email,
@@ -33,7 +38,7 @@ export const authOptions: NextAuthOptions = {
             role: user.role,
           };
         } catch (error) {
-          console.error('Auth error:', error);
+          console.error('[AUTH] error:', error);
           return null;
         }
       },
