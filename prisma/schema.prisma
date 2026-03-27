@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -18,9 +15,9 @@ model User {
   role         String        @default("USER")
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+  pages        Page[]
   ownedSpaces  Space[]
   spaceMembers SpaceMember[]
-  pages        Page[]
 }
 
 model Space {
@@ -31,9 +28,9 @@ model Space {
   ownerId     String
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+  pages       Page[]
   owner       User          @relation(fields: [ownerId], references: [id])
   members     SpaceMember[]
-  pages       Page[]
 }
 
 model SpaceMember {
@@ -42,8 +39,8 @@ model SpaceMember {
   userId    String
   role      String   @default("VIEWER")
   createdAt DateTime @default(now())
-  space     Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  space     Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
 
   @@unique([spaceId, userId])
 }
@@ -58,8 +55,8 @@ model Page {
   authorId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  space     Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id])
   parent    Page?    @relation("PageChildren", fields: [parentId], references: [id])
   children  Page[]   @relation("PageChildren")
-  author    User     @relation(fields: [authorId], references: [id])
+  space     Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
 }
